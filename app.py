@@ -69,6 +69,16 @@ PARAMETROS_NACIONAIS_DATASUS = {
         'aih_por_pac_tardio': 0.09,
         'media_dias_leito': 5.8
     }
+    'Esclerodermia (Esclerose Sistêmica)': {
+        'pac_precoce_br': 8_200,              # Pacientes em manejo precoce no SUS (vasodilatadores / MTX)
+        'pac_tardio_br': 5_800,               # Pacientes em estágio tardio no SUS (Fibrose Pulmonar, HAP, úlceras graves)
+        'custo_precoce_per_capita': 1_850.0,  # Nifedipina, metotrexato, monitoramento capilaroscópico e função pulmonar
+        'custo_sih_per_capita_tardio': 6_400.0,   # Internações por crise renal, infecção de úlceras e descompensação cardiopulmonar
+        'custo_apac_per_capita_tardio': 38_500.0, # Bosentana, ambrisentana, iloprosta, micofenolato, rituximabe / antifibróticos
+        'prop_uti': 0.32,
+        'aih_por_pac_tardio': 0.35,
+        'media_dias_leito': 9.2
+    }
 }
 
 @st.cache_data
