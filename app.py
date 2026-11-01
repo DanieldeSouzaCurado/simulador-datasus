@@ -211,6 +211,7 @@ with st.sidebar:
 
     mapa_alphas = {
         'Diabetes Mellitus': alpha_dm,
+        st.slider
         'Doenças Cardiopulmonares': alpha_cp,
         'Psoríase': alpha_pso,
         'Artrite Psoriásica': alpha_aps
