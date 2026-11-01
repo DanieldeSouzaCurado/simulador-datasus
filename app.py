@@ -15,9 +15,8 @@ st.set_page_config(
 )
 
 # -----------------------------------------------------------------------------
-# 2. DADOS DO DATASUS EMBUTIDOS DIRETAMENTE NO CÓDIGO-FONTE (HARDCODED)
+# 2. DADOS DO DATASUS EMBUTIDOS DIRETAMENTE NO CÓDIGO-FONTE
 # -----------------------------------------------------------------------------
-# Coeficientes estaduais oficiais consolidados (Proporção de AIHs e APACs por UF no SUS)
 PARTICIPACAO_SUS_UF = {
     'SP': 0.224, 'MG': 0.106, 'RJ': 0.082, 'BA': 0.068, 'PR': 0.058,
     'RS': 0.057, 'PE': 0.046, 'CE': 0.042, 'PA': 0.036, 'SC': 0.038,
@@ -27,11 +26,10 @@ PARTICIPACAO_SUS_UF = {
     'AP': 0.003, 'RR': 0.002
 }
 
-# Parâmetros Nacionais Consolidados extraídos do SIH-SUS (AIH) e SIA-SUS (APAC/CEAF/TRS)
 PARAMETROS_NACIONAIS_DATASUS = {
     'Diabetes Mellitus': {
-        'pac_precoce_br': 2_816_000,          # Acompanhamento UBS / Farmácia Popular
-        'pac_tardio_br': 384_000,             # Internações complexas, pé diabético e hemodiálise (TRS)
+        'pac_precoce_br': 2_816_000,
+        'pac_tardio_br': 384_000,
         'custo_precoce_per_capita': 680.0,
         'custo_sih_per_capita_tardio': 4_850.0,
         'custo_apac_per_capita_tardio': 9_400.0,
@@ -40,8 +38,8 @@ PARAMETROS_NACIONAIS_DATASUS = {
         'media_dias_leito': 6.8
     },
     'Doenças Cardiopulmonares': {
-        'pac_precoce_br': 5_525_000,          # Controle ambulatorial HAS, IC inicial, Asma e DPOC
-        'pac_tardio_br': 975_000,             # IAM, AVC, IC descompensada, DPOC exacerbada / Oxigenoterapia
+        'pac_precoce_br': 5_525_000,
+        'pac_tardio_br': 975_000,
         'custo_precoce_per_capita': 720.0,
         'custo_sih_per_capita_tardio': 8_150.0,
         'custo_apac_per_capita_tardio': 2_850.0,
@@ -50,8 +48,8 @@ PARAMETROS_NACIONAIS_DATASUS = {
         'media_dias_leito': 7.4
     },
     'Psoríase': {
-        'pac_precoce_br': 387_000,            # Tópicos, fototerapia e metotrexato (Atenção Básica/Especializada)
-        'pac_tardio_br': 63_000,              # Psoríase moderada/grave em Imunobiológicos (APAC/CEAF)
+        'pac_precoce_br': 387_000,
+        'pac_tardio_br': 63_000,
         'custo_precoce_per_capita': 940.0,
         'custo_sih_per_capita_tardio': 1_180.0,
         'custo_apac_per_capita_tardio': 24_200.0,
@@ -60,21 +58,21 @@ PARAMETROS_NACIONAIS_DATASUS = {
         'media_dias_leito': 4.5
     },
     'Artrite Psoriásica': {
-        'pac_precoce_br': 64_600,             # MMCDs sintéticos (Metotrexato, Leflunomida, Sulfassalazina)
-        'pac_tardio_br': 30_400,              # Erosão articular, Imunobiológicos/JAKi (CEAF) e artroplastias
+        'pac_precoce_br': 64_600,
+        'pac_tardio_br': 30_400,
         'custo_precoce_per_capita': 1_650.0,
         'custo_sih_per_capita_tardio': 3_100.0,
         'custo_apac_per_capita_tardio': 30_800.0,
         'prop_uti': 0.08,
         'aih_por_pac_tardio': 0.09,
         'media_dias_leito': 5.8
-    }
+    },
     'Esclerodermia (Esclerose Sistêmica)': {
-        'pac_precoce_br': 8_200,              # Pacientes em manejo precoce no SUS (vasodilatadores / MTX)
-        'pac_tardio_br': 5_800,               # Pacientes em estágio tardio no SUS (Fibrose Pulmonar, HAP, úlceras graves)
-        'custo_precoce_per_capita': 1_850.0,  # Nifedipina, metotrexato, monitoramento capilaroscópico e função pulmonar
-        'custo_sih_per_capita_tardio': 6_400.0,   # Internações por crise renal, infecção de úlceras e descompensação cardiopulmonar
-        'custo_apac_per_capita_tardio': 38_500.0, # Bosentana, ambrisentana, iloprosta, micofenolato, rituximabe / antifibróticos
+        'pac_precoce_br': 8_200,
+        'pac_tardio_br': 5_800,
+        'custo_precoce_per_capita': 1_850.0,
+        'custo_sih_per_capita_tardio': 6_400.0,
+        'custo_apac_per_capita_tardio': 38_500.0,
         'prop_uti': 0.32,
         'aih_por_pac_tardio': 0.35,
         'media_dias_leito': 9.2
@@ -83,10 +81,6 @@ PARAMETROS_NACIONAIS_DATASUS = {
 
 @st.cache_data
 def carregar_base_embutida() -> pd.DataFrame:
-    """
-    Constrói o DataFrame diretamente a partir das constantes embutidas no código-fonte,
-    sem depender de leitura de arquivos externos ou botões de upload.
-    """
     registros = []
     for uf, peso in PARTICIPACAO_SUS_UF.items():
         for doenca, p in PARAMETROS_NACIONAIS_DATASUS.items():
@@ -177,7 +171,7 @@ def formatar_brl(valor: float) -> str:
 
 
 # -----------------------------------------------------------------------------
-# 4. INTERFACE E CONTROLES LATERAIS (SEM BOTÃO DE UPLOAD)
+# 4. INTERFACE E CONTROLOS LATERAIS
 # -----------------------------------------------------------------------------
 df_bruto = carregar_base_embutida()
 
@@ -185,7 +179,6 @@ with st.sidebar:
     st.header("⚙️ Parâmetros da Simulação")
     st.caption("Base consolidada SIH/SIA-SUS integrada nativamente ao código.")
 
-    # Filtros Geográficos e Clínicos
     lista_ufs = sorted(df_bruto['UF'].unique().tolist())
     ufs_selecionadas = st.multiselect(
         "Unidades Federativas (Vazio = Brasil Inteiro):",
@@ -202,23 +195,24 @@ with st.sidebar:
 
     st.divider()
     st.subheader("🎯 Meta de Diagnóstico Precoce (α)")
-    st.caption("Percentual de pacientes hoje em estágio tardio que seriam estabilizados precocemente:")
+    st.caption("Percentagem de pacientes hoje em estágio tardio que seriam estabilizados precocemente:")
 
     alpha_dm = st.slider("Diabetes Mellitus (%)", 0, 80, 35, step=5) / 100.0
     alpha_cp = st.slider("Doenças Cardiopulmonares (%)", 0, 80, 30, step=5) / 100.0
     alpha_pso = st.slider("Psoríase (%)", 0, 80, 45, step=5) / 100.0
     alpha_aps = st.slider("Artrite Psoriásica (%)", 0, 80, 50, step=5) / 100.0
+    alpha_esc = st.slider("Esclerodermia (Esclerose Sistêmica) (%)", 0, 80, 45, step=5) / 100.0
 
     mapa_alphas = {
         'Diabetes Mellitus': alpha_dm,
-        st.slider
         'Doenças Cardiopulmonares': alpha_cp,
         'Psoríase': alpha_pso,
-        'Artrite Psoriásica': alpha_aps
+        'Artrite Psoriásica': alpha_aps,
+        'Esclerodermia (Esclerose Sistêmica)': alpha_esc
     }
 
     st.divider()
-    st.subheader("📐 Calibração Econômica")
+    st.subheader("📐 Calibração Económica")
     horizonte = st.slider("Horizonte Temporal (Anos)", min_value=1, max_value=10, value=5)
     fator_sih = st.slider(
         "Fator de Correção Tabela SIH-SUS",
@@ -280,7 +274,7 @@ col4.metric(
 st.divider()
 
 # -----------------------------------------------------------------------------
-# 6. VISUALIZAÇÕES INTERATIVAS (PLOTLY DARK TEMPLATE)
+# 6. VISUALIZAÇÕES INTERATIVAS E REFERÊNCIAS
 # -----------------------------------------------------------------------------
 aba_graficos, aba_estados, aba_tabela = st.tabs([
     "📊 Análise por Doença e Evolução Temporal",
@@ -378,7 +372,7 @@ with aba_graficos:
         labels={'Custo_Anual': 'Despesa Anual (R$)', 'DOENCA': ''},
         color_discrete_sequence=['#ff6692', '#ab63fa', '#19d3f3']
     )
-    fig_comp.update_layout(height=360)
+    fig_comp.update_layout(height=380)
     st.plotly_chart(fig_comp, use_container_width=True)
 
 with aba_estados:
@@ -431,7 +425,7 @@ with aba_tabela:
 
     csv_bytes = df_exibicao.to_csv(index=False).encode('utf-8-sig')
     st.download_button(
-        label="📥 Baixar Relatório da Simulação (.CSV)",
+        label="📥 Descarregar Relatório da Simulação (.CSV)",
         data=csv_bytes,
         file_name=f"simulacao_economia_datasus_{horizonte}anos.csv",
         mime="text/csv"
